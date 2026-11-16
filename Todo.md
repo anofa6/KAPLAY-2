@@ -1,0 +1,30 @@
+# Todo
+
+- Start Page
+- Scenes
+- Packages Remaining
+- End Postal Office
+- Entities
+  - Idling
+  - Pathfinding
+    - Only has a certain range, touching it resets to the beginning
+  - Air: Birds
+  - Land: Dog
+  - Water: Pufferfish
+- Obstacles
+  - Touching resets to the beginning
+  - Air: Skyscraper?
+  - Land: Grass?
+  - Water: Seaweed
+- Movement
+  - Shift to cancel
+- Decoration
+  - Air: Clouds
+    - Plane
+    - Rocket
+  - Land: Sidewalk
+    - Houses
+    - Trees
+  - Water: Sand Bars
+    - Reef
+    - Rocks
