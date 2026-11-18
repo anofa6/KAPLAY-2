@@ -13,6 +13,7 @@ nn.on("load", () => {
 
   // Load Sprites //
   loadSprite("player", "media/sprites/postal-worker.png");
+  loadSprite("player-walk", "media/sprites/postal-worker-walk-2.png");
   loadSprite("envelope", "media/sprites/envelope.png");
   loadSprite("shippingBox", "media/sprites/shipping-box.png");
 
@@ -58,11 +59,19 @@ nn.on("load", () => {
   // Moving Left //
   player.onKeyDown("a", () => {
     player.move(-player.speed, 0);
+    if (player.isGrounded()) {
+      player.flipX = true;
+      player.sprite = "player-walk";
+    }
   });
 
   // Moving Right //
   player.onKeyDown("d", () => {
     player.move(player.speed, 0);
+    if (player.isGrounded()) {
+      player.sprite = "player-walk";
+      player.flipX = false;
+    }
   });
 
   // Jumping //
@@ -73,6 +82,7 @@ nn.on("load", () => {
         volume: 0.5,
       });
       player.jump(800);
+      player.sprite = "player";
     }
   });
 
@@ -153,7 +163,7 @@ nn.on("load", () => {
 
   // Generate Platforms //
   function generatePlatforms(platformArray, type) {
-    const height = 220;
+    const height = 250;
 
     // Go through each level //
     platformArray.forEach((level, levelHeight) => {
@@ -247,6 +257,10 @@ nn.on("load", () => {
     loadSprite("cloud-sharp-r", "media/platforms/cloud/cloud-sharp-r.png");
     loadSprite("cloud-sharp-l", "media/platforms/cloud/cloud-sharp-l.png");
     loadSprite("cloud-sharp", "media/platforms/cloud/cloud-sharp.png");
+    loadSprite("background", "media/backgrounds/sky-bg.png");
+
+    // Set Background //
+    add([sprite("background"), pos(-1000, -1000), z(-10)]);
 
     // Set Package Counter //
     packageCounter.value = 2;
