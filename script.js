@@ -19,7 +19,7 @@ nn.on("load", () => {
   // Start Background Music //
   play("soundtrack", {
     loop: true,
-    volume: 0.1,
+    volume: 0.05,
   });
 
   // Levels //
@@ -28,7 +28,7 @@ nn.on("load", () => {
   // Player //
   const player = add([
     sprite("player"),
-    scale(1 / 10),
+    scale(1 / 12),
     pos(0, -300),
     area(),
     body(),
@@ -48,7 +48,7 @@ nn.on("load", () => {
 
   // Packages Counter //
   const packageCounter = add([
-    text("Packages:"),
+    text("Remaining Packages:"),
     pos(24, 56),
     { value: 0 },
     fixed(),
@@ -94,7 +94,7 @@ nn.on("load", () => {
 
     // Increment Packages Count //
     packageCounter.value--;
-    packageCounter.text = "Packages: " + packageCounter.value;
+    packageCounter.text = "Remaining Packages: " + packageCounter.value;
 
     // Change Office Status //
     if (packageCounter.value === 0) {
@@ -153,7 +153,7 @@ nn.on("load", () => {
 
   // Generate Platforms //
   function generatePlatforms(platformArray, type) {
-    const height = 250;
+    const height = 220;
 
     // Go through each level //
     platformArray.forEach((level, levelHeight) => {
@@ -176,9 +176,9 @@ nn.on("load", () => {
             // Right Block //
             case "r":
               add([
-                pos(platform * 298.5, levelHeight * height),
+                pos(platform * 199, levelHeight * height),
                 sprite(`${type}-sharp-r`),
-                scale(1 / 4),
+                scale(1 / 6),
                 area(),
                 body({ isStatic: true }),
               ]);
@@ -186,9 +186,9 @@ nn.on("load", () => {
             // Left Block //
             case "l":
               add([
-                pos(platform * 298.5, levelHeight * height),
+                pos(platform * 199, levelHeight * height),
                 sprite(`${type}-sharp-l`),
-                scale(1 / 4),
+                scale(1 / 6),
                 area(),
                 body({ isStatic: true }),
               ]);
@@ -196,9 +196,9 @@ nn.on("load", () => {
             // Middle Block //
             case "m":
               add([
-                pos(platform * 298.5, levelHeight * height),
+                pos(platform * 199, levelHeight * height),
                 sprite(`${type}-sharp`),
-                scale(1 / 4),
+                scale(1 / 6),
                 area(),
                 body({ isStatic: true }),
               ]);
@@ -207,9 +207,9 @@ nn.on("load", () => {
             // Single Block //
             case "s":
               add([
-                pos(platform * 298.5, levelHeight * height),
+                pos(platform * 199, levelHeight * height),
                 sprite(`${type}-round`),
-                scale(1 / 4),
+                scale(1 / 6),
                 area(),
                 body({ isStatic: true }),
               ]);
@@ -224,8 +224,8 @@ nn.on("load", () => {
             level[platform] != " "
           ) {
             add([
-              pos(platform * 298.5, levelHeight * height - 150),
-              rect(150, 150),
+              pos(platform * 199, levelHeight * height - 100),
+              rect(100, 100),
               color(145, 145, 145),
               area(),
               body({ isStatic: true }),
@@ -250,7 +250,7 @@ nn.on("load", () => {
 
     // Set Package Counter //
     packageCounter.value = 2;
-    packageCounter.text = `Packages: ${packageCounter.value}`;
+    packageCounter.text = `Remaining Packages: ${packageCounter.value}`;
 
     // Add Platforms //
     generatePlatforms(
@@ -292,7 +292,7 @@ nn.on("load", () => {
 
     // Set Package Counter //
     packageCounter.value = 4;
-    packageCounter.text = `Packages Remaining: ${packageCounter.value}`;
+    packageCounter.text = `Remaining Packages: ${packageCounter.value}`;
 
     // Add Platforms //
     generatePlatforms(["lmmmmmmMr"], "grass");
@@ -312,7 +312,7 @@ nn.on("load", () => {
   scene("water", () => {
     // Set Package Counter //
     packageCounter.value = 4;
-    packageCounter.text = `Packages Remaining: ${packageCounter.value}`;
+    packageCounter.text = `Remaining Packages: ${packageCounter.value}`;
 
     // Add Platforms //
 
