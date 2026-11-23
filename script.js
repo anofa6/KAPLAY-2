@@ -117,6 +117,10 @@ nn.on("load", () => {
   // Gamepad Movement //
   player.onGamepadStick("left", (value) => {
     player.move(player.speed * value.x, 0);
+    if (player.isGrounded() && Math.round(value.x) != 0) {
+      player.flipX = value.x < 0;
+      player.sprite = "player-walk";
+    }
   });
 
   // Gamepad Jump //
