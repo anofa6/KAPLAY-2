@@ -4,7 +4,7 @@ nn.on("load", () => {
   });
 
   // Enable Gravity //
-  setGravity(1200);
+  setGravity(1100);
 
   // Load Audio Files //
   loadSound("collect", "media/audio/collect.wav");
@@ -90,9 +90,51 @@ nn.on("load", () => {
     }
   });
 
-  // Testing for Level Building //
-  player.onKeyPress("f", () => {
-    console.log(`${player.pos.x}, ${player.pos.y}`);
+  player.onKeyDown("w", () => {
+    // Only if player is touching the ground //
+    if (player.isGrounded()) {
+      play("jump", {
+        volume: 0.5,
+      });
+      player.jump(800);
+      player.sprite = "player";
+    }
+  });
+
+  // Jump Cancel //
+  player.onKeyDown("shift", () => {
+    if (!player.isGrounded()) {
+      player.vel.y = 600;
+    }
+  });
+
+  player.onKeyDown("s", () => {
+    if (!player.isGrounded()) {
+      player.vel.y = 600;
+    }
+  });
+
+  // Gamepad Movement //
+  player.onGamepadStick("left", (value) => {
+    player.move(player.speed * value.x, 0);
+  });
+
+  // Gamepad Jump //
+  player.onGamepadButtonPress("south", () => {
+    if (player.isGrounded()) {
+      play("jump", {
+        volume: 0.5,
+      });
+      player.jump(800);
+      player.sprite = "player";
+    }
+  });
+
+  // Gamepad Jump Cancel //
+  player.onGamepadButtonPress("east", () => {
+    if (!player.isGrounded()) {
+      player.vel.y = 600;
+    }
   });
 
   // Collecting Package //
@@ -243,6 +285,7 @@ nn.on("load", () => {
               scale(1 / 7),
               pos(platform * 199, levelHeight * height - 140),
               area(),
+              z(-1),
               "office",
             ]);
           }
@@ -309,7 +352,6 @@ nn.on("load", () => {
       obstacleArr.push([]);
     }
     obstacleArr[0][0] = "p";
-    console.log(obstacleArr);
     let packagesNeeded = packageCounter.value;
     let obstaclesNeeded = 8;
     let enemiesNeeded = 15;
@@ -317,6 +359,11 @@ nn.on("load", () => {
     while (packagesNeeded || obstaclesNeeded || enemiesNeeded) {
       let randomLevel = randi(numLevels);
       let randomPos = randi(levelWidth);
+      if (
+        genArr[randomLevel][randomPos] ===
+        genArr[randomLevel][randomPos].toUpperCase()
+      )
+        continue;
       if (obstacleArr[randomLevel][randomPos]) continue;
       if (packagesNeeded) {
         add([
@@ -404,8 +451,6 @@ nn.on("load", () => {
     // Prodcedurally Generate Packages, Obstacles, and Enemies //
     let obstacleArr = [[], [], [], [], [], [], []];
     obstacleArr[0][0] = "p";
-    console.log(obstacleArr);
-    console.log(genArr);
     let packagesNeeded = packageCounter.value;
     let obstaclesNeeded = 8;
     let enemiesNeeded = 15;
@@ -413,6 +458,11 @@ nn.on("load", () => {
     while (packagesNeeded || obstaclesNeeded || enemiesNeeded) {
       let randomLevel = randi(numLevels);
       let randomPos = randi(levelWidth);
+      if (
+        genArr[randomLevel][randomPos] ===
+        genArr[randomLevel][randomPos].toUpperCase()
+      )
+        continue;
       if (obstacleArr[randomLevel][randomPos]) continue;
       if (packagesNeeded) {
         add([
@@ -501,8 +551,7 @@ nn.on("load", () => {
     // Prodcedurally Generate Packages, Obstacles, and Enemies //
     let obstacleArr = [[], [], [], [], [], [], []];
     obstacleArr[0][0] = "p";
-    console.log(obstacleArr);
-    console.log(genArr);
+
     let packagesNeeded = packageCounter.value;
     let obstaclesNeeded = 8;
     let enemiesNeeded = 15;
@@ -510,6 +559,11 @@ nn.on("load", () => {
     while (packagesNeeded || obstaclesNeeded || enemiesNeeded) {
       let randomLevel = randi(numLevels);
       let randomPos = randi(levelWidth);
+      if (
+        genArr[randomLevel][randomPos] ===
+        genArr[randomLevel][randomPos].toUpperCase()
+      )
+        continue;
       if (obstacleArr[randomLevel][randomPos]) continue;
       if (packagesNeeded) {
         add([
