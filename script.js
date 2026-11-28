@@ -3,9 +3,6 @@ nn.on("load", () => {
     background: "#8cc1fa",
   });
 
-  // Enable Gravity //
-  setGravity(1100);
-
   // Load Audio Files //
   loadSound("collect", "media/audio/collect.wav");
   loadSound("soundtrack", "media/audio/soundtrack.mp3");
@@ -20,9 +17,10 @@ nn.on("load", () => {
   loadSprite("postalOfficeOpen", "media/sprites/post-office-open.png");
 
   // Start Background Music //
-  play("soundtrack", {
+  const music = play("soundtrack", {
     loop: true,
     volume: 0.05,
+    paused: true,
   });
 
   // Levels //
@@ -181,6 +179,8 @@ nn.on("load", () => {
         go(levels[player.level]);
       } else {
         timer.isRunning = false;
+        go("end");
+        player.level = 0;
       }
     }
   });
@@ -301,10 +301,57 @@ nn.on("load", () => {
     });
   }
 
+  scene("start", () => {
+    timer.opacity = 0;
+    packageCounter.opacity = 0;
+    player.opacity = 0;
+    setCursor("default");
+    player.pos = vec2(0, 0);
+    add([
+      rect(800, 80),
+      pos(width() / 2 - 400, 50),
+      color(255, 0, 255),
+      fixed(),
+    ]);
+    add([
+      rect(400, 80),
+      pos(width() / 2 - 200, height() / 2 + 75),
+      color(255, 0, 255),
+      area(),
+      "play",
+      fixed(),
+    ]);
+    add([
+      rect(400, 80),
+      pos(width() / 2 - 200, height() / 2 + 200),
+      color(255, 0, 255),
+      area(),
+      "music",
+      fixed(),
+    ]);
+
+    onClick("play", () => {
+      go("air");
+    });
+
+    onClick("music", () => {
+      music.paused = !music.paused;
+    });
+  });
+
   scene("air", () => {
+    // Start Game //
+    setGravity(1100);
+    resetPlayer();
+    setCursor("none");
+    player.opacity = 1;
+    timer.opacity = 1;
+    packageCounter.opacity = 1;
+    timer.isRunning = true;
+
     // Load Sprites //
-    loadSprite("skyscraper", "media/obstacles/skyscraper.png");
-    loadSprite("bird", "media/enemies/bird.png");
+    loadSprite("skyscraper", "media/obstacles/skyscraper-outline.png");
+    loadSprite("bird", "media/enemies/bird-outline.png");
     loadSprite("cloud-round", "media/platforms/cloud/cloud-round.png");
     loadSprite("cloud-sharp-r", "media/platforms/cloud/cloud-sharp-r.png");
     loadSprite("cloud-sharp-l", "media/platforms/cloud/cloud-sharp-l.png");
@@ -315,7 +362,7 @@ nn.on("load", () => {
     add([sprite("background"), pos(-1000, -1000), z(-10)]);
 
     // Set Package Counter //
-    packageCounter.value = 3;
+    packageCounter.value = 0; //3;
     packageCounter.text = `Remaining Packages: ${packageCounter.value}`;
 
     // Add Platforms //
@@ -357,8 +404,8 @@ nn.on("load", () => {
     }
     obstacleArr[0][0] = "p";
     let packagesNeeded = packageCounter.value;
-    let obstaclesNeeded = 8;
-    let enemiesNeeded = 15;
+    let obstaclesNeeded = 0; //8;
+    let enemiesNeeded = 0; //15;
 
     while (packagesNeeded || obstaclesNeeded || enemiesNeeded) {
       let randomLevel = randi(numLevels);
@@ -419,7 +466,7 @@ nn.on("load", () => {
     add([sprite("background"), pos(-1000, -1000), z(-10)]);
 
     // Set Package Counter //
-    packageCounter.value = 3;
+    packageCounter.value = 0; //3;
     packageCounter.text = `Remaining Packages: ${packageCounter.value}`;
 
     // Add Platforms //
@@ -456,8 +503,8 @@ nn.on("load", () => {
     let obstacleArr = [[], [], [], [], [], [], []];
     obstacleArr[0][0] = "p";
     let packagesNeeded = packageCounter.value;
-    let obstaclesNeeded = 8;
-    let enemiesNeeded = 15;
+    let obstaclesNeeded = 0; //8;
+    let enemiesNeeded = 0; //15;
 
     while (packagesNeeded || obstaclesNeeded || enemiesNeeded) {
       let randomLevel = randi(numLevels);
@@ -519,7 +566,7 @@ nn.on("load", () => {
     // Set Background //
     add([sprite("background"), pos(-1000, -1000), z(-10)]);
     // Set Package Counter //
-    packageCounter.value = 3;
+    packageCounter.value = 0; //3;
     packageCounter.text = `Remaining Packages: ${packageCounter.value}`;
 
     // Add Platforms //
@@ -557,8 +604,8 @@ nn.on("load", () => {
     obstacleArr[0][0] = "p";
 
     let packagesNeeded = packageCounter.value;
-    let obstaclesNeeded = 8;
-    let enemiesNeeded = 15;
+    let obstaclesNeeded = 0; //8;
+    let enemiesNeeded = 0; //15;
 
     while (packagesNeeded || obstaclesNeeded || enemiesNeeded) {
       let randomLevel = randi(numLevels);
@@ -609,6 +656,40 @@ nn.on("load", () => {
     }
   });
 
-  go("air");
-  timer.isRunning = true;
+  scene("end", () => {
+    timer.opacity = 0;
+    packageCounter.opacity = 0;
+    setGravity(0);
+    player.vel = vec2(0, 0);
+    player.opacity = 0;
+    setCursor("default");
+    player.pos = vec2(0, 0);
+    add([
+      rect(800, 80),
+      pos(width() / 2 - 400, 50),
+      color(255, 0, 255),
+      fixed(),
+    ]);
+    add([
+      text(timer.text, { width: 1000, align: "center", size: 100 }),
+      pos(width() / 2 - 500, height() / 2 - 100),
+      fixed(),
+    ]);
+    timer.value = 0;
+
+    add([
+      rect(400, 80),
+      pos(width() / 2 - 200, height() / 2 + 150),
+      color(255, 0, 255),
+      area(),
+      "back",
+      fixed(),
+    ]);
+
+    onClick("back", () => {
+      go("end");
+    });
+  });
+
+  go("start");
 });
